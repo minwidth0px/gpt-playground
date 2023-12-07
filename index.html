@@ -147,7 +147,6 @@
 		display: flex;
 		box-sizing: border-box;
 		flex-direction: column;
-		margin-right: 15px;
 		height: 100%;
 		overflow-y: clip;
 	}
@@ -294,11 +293,13 @@
 	}
 	.menu-container{
 		padding-top: 15px;
+		padding-right: 15px;
 		width: 15%;
 		display: flex;
 		flex-grow: 0;
 		flex-direction: column;
 		gap: 10px;
+		overflow: auto;
 	}
 	.menu-item{
 		padding-top: 8px;
@@ -524,14 +525,14 @@
         <div id="body">
             <div id="system-container" class="system-container system-container-display-initial">
                 <div class = "display-flex justify-content-space-between"> 
-					<span id="system-title">system</span> 
+					<span id="system-title">System</span> 
 					<span id="system-remove" style="padding-right: 8px; padding-top: 6px">⊖</span>
 				</div>
 				<textarea id="system-message" placeholder="You are a helpful assistant."></textarea>
             </div>
             <div id="history-container" class="history-container">
                 <div style="display: flex; justify-content: space-between"> 
-					<span id="history-title"> history </span> 
+					<span id="history-title">History</span> 
 					<span id="history-remove" style="padding-right: 8px; padding-top: 6px">⊖</span> 
 				</div>
                 <div id="history"></div>
