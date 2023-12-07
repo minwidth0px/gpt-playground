@@ -383,7 +383,8 @@
 		min-width: 0px;
 	}
 	#code-container{
-		padding-left: 8px;
+		margin-left: 8px;
+		margin-right: 8px;
 		overflow: auto;
 	}
 	#view-code-header{
@@ -426,6 +427,20 @@
 	.hide-notification{
 		top :-50px !important;
 	}
+	
+	::-webkit-scrollbar {
+	  height: 3px;
+	  width: 3px;
+	}
+	::-webkit-scrollbar-track {
+	  background: transparent;
+	}
+	::-webkit-scrollbar-thumb {
+	  background-color: rgba(155, 155, 155, 0.5);
+	  border-radius: 20px;
+	  border: transparent;
+	}
+	
 	.display-flex{
 		display: flex;
 	}
