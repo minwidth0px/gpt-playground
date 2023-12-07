@@ -637,7 +637,9 @@
           currentChatText.focus()
         })
         
-        document.getElementById("start").addEventListener("click", async () => {
+        document.getElementById("start").addEventListener("click", connect)
+        
+		async function connect(){
 			const API_KEY = document.getElementById("api-key").value
 			if(API_KEY == ""){
 				notification("Enter")
@@ -675,8 +677,8 @@
 					}
 				}
 			}
-        })
-        
+		}
+		
         const textInputs = [
           document.getElementById("temperature"),
           document.getElementById("maxlength"),
@@ -808,6 +810,7 @@
           if (page_url.includes("#")) {
             const api_key = page_url.split("#")[1]
             document.getElementById("api-key").value = api_key
+			connect()
           }
         })
         
