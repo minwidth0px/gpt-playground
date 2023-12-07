@@ -1,0 +1,1118 @@
+<!doctype html>
+<html>
+
+<head>
+<style>
+	/*! buttons from https://getcssscan.com/css-buttons-examples */
+	.button-2 {
+		appearance: none;
+		background-color: #0095ff;
+		border: 1px solid transparent;
+		border-radius: 6px;
+		//box-shadow: rgba(255, 255, 255, .4) 0 1px 0, rgba(255, 255, 255, .4) 0 1px 0 inset;
+		//box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+		box-sizing: border-box;
+		color: #fff;
+		cursor: pointer;
+		display: inline-block;
+		font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+		font-size: 14px;
+		font-weight: 500;
+		line-height: 20px;
+		list-style: none;
+		padding: 6px 16px;
+		position: relative;
+		transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+		user-select: none;
+		-webkit-user-select: none;
+		touch-action: manipulation;
+		vertical-align: middle;
+		word-wrap: break-word;
+	}
+	.button-2:hover {
+		background-color: #07c;
+		text-decoration: none;
+		transition-duration: 0.1s;
+	}
+	.button-2:disabled {
+		background-color: #FAFBFC;
+		border-color: rgba(27, 31, 35, 0.15);
+		color: #959DA5;
+		cursor: default;
+	}
+	.button-2:active {
+		background-color: #0064bd;
+		box-shadow: none;
+		box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
+		transition: none 0s;
+	}
+	.button-2:focus {
+		box-shadow: 0 0 0 4px rgba(0, 149, 255, .15);
+		//outline: 1px transparent;
+	}
+	.button-2:before {
+		display: none;
+	}
+	.button-2:-webkit-details-marker {
+		display: none;
+	}
+	
+	
+	.button-4 {
+		appearance: none;
+		background-color: #FAFBFC;
+		border: 1px solid rgba(27, 31, 35, 0.15);
+		border-radius: 6px;
+		box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+		box-sizing: border-box;
+		color: #24292E;
+		cursor: pointer;
+		display: inline-block;
+		font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+		font-size: 14px;
+		font-weight: 500;
+		line-height: 20px;
+		list-style: none;
+		padding: 6px 16px;
+		position: relative;
+		transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+		user-select: none;
+		-webkit-user-select: none;
+		touch-action: manipulation;
+		vertical-align: middle;
+		word-wrap: break-word;
+	}
+	.button-4:hover {
+		background-color: #F3F4F6;
+		text-decoration: none;
+		transition-duration: 0.1s;
+	}
+	.button-4:disabled {
+		background-color: #FAFBFC;
+		border-color: rgba(27, 31, 35, 0.15);
+		color: #959DA5;
+		cursor: default;
+	}
+	.button-4:active {
+		background-color: #EDEFF2;
+		box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
+		transition: none 0s;
+	}
+	.button-4:focus {
+		outline: 1px transparent;
+	}
+	.button-4:before {
+		display: none;
+	}
+	.button-4:-webkit-details-marker {
+		display: none;
+	}
+	.button-7 {
+		background-color: #0095ff;
+		border: 1px solid transparent;
+		border-radius: 3px;
+		box-shadow: rgba(255, 255, 255, .4) 0 1px 0 0 inset;
+		box-sizing: border-box;
+		color: #fff;
+		cursor: pointer;
+		display: inline-block;
+		font-family: -apple-system,system-ui,"Segoe UI",sans-serif;
+		font-size: 13px;
+		font-weight: 400;
+		line-height: 1.15385;
+		margin: 0;
+		outline: none;
+		padding: 8px .8em;
+		position: relative;
+		text-align: center;
+		text-decoration: none;
+		user-select: none;
+		-webkit-user-select: none;
+		touch-action: manipulation;
+		vertical-align: baseline;
+	}
+	.button-7:hover,
+	.button-7:focus {
+		background-color: #07c;
+	}
+	.button-7:focus {
+		box-shadow: 0 0 0 4px rgba(0, 149, 255, .15);
+	}
+	.button-7:active {
+		background-color: #0064bd;
+		box-shadow: none;
+	}
+	html, body {
+		height: 100%;
+		margin-bottom: 0;
+		margin-left: 0;
+		margin-right: 0;
+		margin-top: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+	body{
+		font-family: Arial, Helvetica, sans-serif;
+		overflow-y: clip;
+	}
+	textarea {
+		resize: none;
+		border: none;
+		background-color: inherit;
+		min-width: 5px;
+	}
+	textarea:focus {
+		background-color: white;
+	}
+	select,
+	options{
+		width: 120px;
+		height: 30px;
+		border: 1px solid #999;
+		font-size: 14px;
+		color: #000;
+		background-color: #fff;
+		border-radius: 5px;
+	}
+	#flex-container {
+		padding: 10px;
+		padding-top: 5px;
+		display: flex;
+		box-sizing: border-box;
+		flex-direction: column;
+		margin-right: 15px;
+		height: 100%;
+		overflow-y: clip;
+	}
+	#header{
+		display: flex;
+		justify-content: flex-end;
+		gap: 5px;
+	}
+	#body{
+		display: flex;
+		box-sizing: border-box;
+		flex: 1;
+		height: 100%;
+		overflow-y: clip;
+		min-width:0;
+		min-height:0;
+	}
+	.system-container, .history-container{
+		padding-top: 2px; 
+		flex-basis: 20%;
+		margin-right: 15px;
+		border: solid grey 1px;
+		border-radius: 10px;
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: column;
+		overflow-y: auto;
+	}
+	.system-container{
+		padding-left: 5px;
+		padding-right: 5px;
+	}
+	#system-title, #history-title{
+		padding: 8px;
+	}
+	#system-remove, #history-remove{
+		cursor: pointer;
+	}
+	#system-message{
+		border-radius: 8px;
+		box-sizing: border-box;
+		padding: 8px;
+		flex-grow: 0;
+		width: 100%;
+	}
+	#history{
+		padding-top: 8px;
+		padding-bottom: 8px;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+	.history-item{
+		border-radius: 5px;
+		border: solid grey 1px;
+		margin-left: 5px;
+		margin-right:5px;
+		padding-left: 5px;
+		padding-right: 2px;
+		overflow: hidden;
+		text-overflow: "";
+		line-height: 16px;
+		box-sizing: border-box;
+		white-space: pre-wrap;
+		height: 3lh;
+	}
+	#chat-column{
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+	}
+	#chat-container{
+		flex: 1;
+		box-sizing: border-box;
+		padding-right: 10px;
+		display: flex;
+		flex-direction: column;
+		overflow-y: auto;
+	}
+	#chat{
+	}
+	#add-message-container{
+		flex-grow:1;
+		padding-top: 8px;
+		padding-bottom: 8px;
+	}
+	#add-message{
+		padding-top: 8px;
+		padding-bottom: 8px;
+	}
+	#add-message:hover{
+		background-color: #f2f2f2;
+	}
+	#submit-button{
+	}
+	.chat-item:hover {
+		background-color: #f2f2f2;
+	}
+		.chat-item:hover .chat-item-remove{
+		visibility: visible;
+	}
+	.chat-item:focus {
+		background-color: #f2f2f2;
+	}
+	.chat-item-focued {
+		background-color: #f2f2f2;
+	}
+	.chat > .chat-item:last-child{
+		//scroll-snap-align: end;
+	}
+	.chat-item{
+		display: flex;
+		flex-direction: row;
+		box-sizing: border-box;
+		padding: 8px;
+		border-bottom: solid #cfcfcf 1px;
+	}
+	.chat-item-textarea{
+		border-radius: 8px;
+		padding-top: 6px;
+		box-sizing: border-box;
+		min-height: 70px;
+		flex-grow:1;
+		border-radius: 8px;
+	}
+	.chat-item-role{
+		height: fit-content;
+		box-sizing: border-box;
+	}
+	.chat-item-role-container{
+		padding-top: 10px;
+		min-width: 93px;
+	}
+	.chat-item-remove{
+		cursor: pointer;
+		padding-top: 10px;
+		padding-left: 10px;
+		padding-right: 10px;
+		visibility: hidden;
+		font-size: 20px;
+		border-radius: 50%;
+		color: grey;
+	}
+	.menu-container{
+		width: 15%;
+		display: flex;
+		flex-grow: 0;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+	.menu-item{
+		padding-top: 8px;
+		padding-bottom: 8px;
+	}
+	.menu-input-container{
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		overflow-y: auto;
+	}
+	.menu-text-input{
+		text-align: end;
+		margin-right: 2px;
+		box-sizing: border-box;
+	}
+	.input-stop-seq{
+		word-wrap: break-word;
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		box-sizing: border-box;
+		justify-content: flex-start;
+		align-items: center;
+		border: 1px solid grey;
+		padding: 5px;
+		flex-wrap: wrap;
+		gap: 3px;
+		border-radius: 5px;
+	}
+	.input-stop-seq .stop-sequence-tag-container{
+		display:flex;
+		flex-wrap: wrap;
+		word-wrap: break-word;
+		min-width: 0px;
+		border: none;
+		border-radius: 0px;
+		background-color: auto;
+		padding: none;
+		margin: none;
+	}
+	.input-stop-seq .stop-sequence-tag{
+		word-wrap: break-word;
+		min-width: 0px;
+		border: 1px solid grey;
+		border-radius: 3px;
+		background-color: #eeeeee;
+		padding: 3px;
+	}
+	.input-stop-seq [contenteditable='true']{
+		padding: 3px;
+		min-width: 0px;
+		word-wrap: break-word;
+		border: 1px solid white;
+		outline: none;
+		border: none;
+		flex: 1 1 auto;
+		align-self: flex-start;
+	}
+	#stopSeq{
+		border: solid #43464d 1px;
+	}
+	.view-code-dialog{
+		border: none;
+		border-radius: 5px;
+		padding: 1rem;
+		font-size: 16px;
+	}
+	#view-code-container{
+		margin-top: 12px;
+		margin-bottom: 5px;
+		padding-bottom: 12px;
+		border-radius: 8px;
+		background-color: #202123;
+		color: #cbcbcc;
+		overflow: hidden;
+	}
+	#view-code-dialog[open]{
+		display: flex;
+	}
+	#code-container{
+		padding-left: 8px;
+	}
+	#view-code-header{
+		padding: 3px;
+		background-color: #353740;
+		color: #acadb9;
+	}
+	.view-code-content{
+		color: #00a67d;
+		padding-left: 8px;
+		padding-right: 8px;
+	}
+	.view-code-dialog:focus,
+	#view-code-copy:focus{
+		outline: none;
+		border: none;
+		box-shadow: none;
+	}
+	#view-code-copy{
+		
+	}
+	dialog pre{
+		margin: 3px;
+	}
+	#notification {
+		position: fixed;
+		top: -50px;
+		right: 0px;
+		left: 0px;
+		margin: auto;
+		height: fit-content;
+		width: fit-content;
+		font-size: 22;
+		text-align:center;
+		transition:.5s all ease-in-out;
+	}
+	.show-notification{
+		top : 2% !important;
+	}
+	.hide-notification{
+		top :-50px !important;
+	}
+	.display-flex{
+		display: flex;
+	}
+	.flex-column{
+		flex-direction: column
+	}
+	.flex-grow-1{
+		flex-grow: 1;
+	}
+	.flex-1{
+		flex: 1;
+	}
+	.justify-content-flex-end{
+		justify-content: flex-end;
+	}
+	.justify-slef-flex-end{
+		display: flex;
+		justify-self: flex-end;
+	}
+	.gap-5{
+		gap: 5px;
+	}
+	.overflow-auto{
+		overflow: auto;
+	}
+	.width-100{
+		width: 100%
+	}
+	.sticky-footer{
+		//position: sticky;
+		//bottom: 0;
+	}
+	.pointer{
+		cursor: pointer;
+	}
+	.display-none{
+		display: none;
+	}
+	.select-none{
+		user-select: none;
+	}
+	.width-50{
+		width: 50%;
+	}
+	.justify-content-center{
+		justify-content: center;
+	}
+	.width-min-content{
+		width: min-content;
+	}
+</style>
+</head>
+<body>
+    <div id="flex-container">
+        <div id="header">
+            <div class="button-1"> <input placeholder="OpenAI Key" id="api-key" class="button-4" /> </div>
+            <div id="start" class="button-4">Start</div>
+            <div id="view-code" class="button-4">View Code</div>
+        </div>
+        <div id="body">
+            <div id="system-container" class="system-container">
+                <div style="display: flex; justify-content: space-between"> 
+					<span id="system-title">system</span> 
+					<span id="system-remove" style="padding-right: 8px; padding-top: 6px">⊖</span>
+				</div>
+				<textarea id="system-message" placeholder="You are a helpful assistant."></textarea>
+            </div>
+            <div id="history-container" class="history-container display-none">
+                <div style="display: flex; justify-content: space-between"> 
+					<span id="history-title"> history </span> 
+					<span id="history-remove" style="padding-right: 8px; padding-top: 6px">⊖</span> 
+				</div>
+                <div id="history"></div>
+            </div>
+            <div id="chat-column">
+                <div id="chat-container">
+                    <div id="chat"></div>
+                    <div id="add-message" class="pointer"> &nbsp&nbsp ⊕ &nbsp Add Message </div>
+                    <div id="add-message-container" class="should-delete-soon"></div>
+                </div>
+                <div id="options"> 
+					<span id="submit-button" class="button-2"> submit </span>
+					<span id="show-history" class="button-2"> show history </span> 
+					<span id="show-system" class="button-2 display-none"> show system </span> 
+				</div>
+            </div>
+            <div class="menu-container">
+                <div class="menu-item model-select">
+                    <div class="menu-item">Model</div>
+					<select id="model" class="width-100"></select>
+                </div>
+                <div class="menu-item slidecontainer">
+                    <div class="menu-input-container width-100 display-flex"> 
+						<span>Temperature</span> 
+						<textarea id="temperature" rows="1" cols="4" class="menu-text-input">1</textarea>
+					</div>
+					<input id="temperatureSlider" type="range" class="width-100" min="0" max="2" value="1" step="0.01"/>
+                </div>
+                <div class="menu-item slidecontainer">
+                    <div class="menu-input-container width-100 display-flex"> 
+						<span>Maximum length</span> 
+						<textarea id="maxlength" rows="1" cols="4" class="menu-text-input">256</textarea> 
+					</div>
+					<input id="maxlengthSlider" class="width-100" type="range" min="1" max="8000" value="256" />
+                </div>
+                <div class="menu-item slidecontainer">
+                    <div class="width-100 display-flex">Stop sequences</div>
+					<div class="menu-item" style="font-size: 9px; color: #43464d"> Enter sequence and press Enter </div>
+                    <div class="input-stop-seq"> 
+						<span class="stop-sequence-tag-container"></span>
+						<span contenteditable="true"></span> 
+					</div>
+                </div>
+                <div class="menu-item slidecontainer">
+                    <div class="menu-input-container width-100 display-flex">
+						<span>Top P</span> 
+						<textarea id="topP" rows="1" cols="4" class="menu-text-input">1</textarea>
+					</div> 
+					<input id="topPSlider" class="width-100" type="range" min="0" max="1" value="1" step="0.01" />
+                </div>
+                <div class="menu-item slidecontainer">
+                    <div class="menu-input-container width-100 display-flex"> <span>Frequency penalty</span> <textarea id="frequencyPenalty" rows="1" cols="4" class="menu-text-input">1</textarea> </div> <input id="frequencyPenaltySlider" class="width-100" type="range" min="0" max="1" value="1" step="0.01" />
+                </div>
+                <div class="menu-item slidecontainer">
+                    <div class="menu-input-container width-100 display-flex"> <span>Presence penalty</span> <textarea id="presencePenalty" rows="1" cols="4" class="menu-text-input">1</textarea> </div> <input id="presencePenaltySlider" class="width-100" type="range" min="0" max="1" value="1" step="0.01" />
+                </div>
+            </div>
+        </div>
+    </div>
+	<dialog id="notification" class="button-4"></dialog>
+    <dialog id="view-code-dialog" class="view-code-dialog width-50">
+        <div class="display-flex flex-grow-1 flex-column">
+            <div class="select-none">View Code</div>
+            <div id="view-code-container" class="display-flex flex-column">
+                <div id="view-code-header" class="display-flex justify-content-flex-end"> 
+					<div id="view-code-copy" class="button-4 width-min-content">copy</div> 
+				</div>
+                <div id="code-container" class="display-flex gap-5 overflow-auto flex-grow-1"></div>
+            </div>
+            <div class="display-flex justify-content-flex-end gap-5"> 
+				<div id="view-code-close" class="button-4">close</div> 
+			</div>
+        </div>
+    </dialog>
+    <script>
+        const submit = document.getElementById("submit-button")
+        const chat = document.getElementById("chat")
+        let history = []
+        let breakStream = false
+        let start = false
+        
+        document.addEventListener("click", (e) => {
+          if (document.querySelector(".chat-item-focued") != null) {
+            document
+              .querySelector(".chat-item-focued")
+              .classList.remove("chat-item-focued")
+          }
+          if (e.target.parentNode.classList.contains("chat-item")) {
+            e.target.parentNode.classList.add("chat-item-focued")
+          }
+          if (e.target.id == "add-message") {
+            const currentChatItem = document.querySelector(
+              "#chat .chat-item:last-child",
+            )
+            currentChatItem.classList.add("chat-item-focued")
+          }
+        })
+        
+		const addMessage = document.getElementById("add-message")
+        addMessage.addEventListener("click", () => {
+          const currentRole = document.querySelector(
+            "#chat .chat-item:last-child .chat-item-role",
+          )
+          if (currentRole == null || currentRole.innerText == "assistant") {
+            addNewChatBox("user")
+          } else {
+            addNewChatBox("assistant")
+          }
+          const currentChatText = document.querySelector(
+            "#chat .chat-item:last-child textarea",
+          )
+          currentChatText.focus()
+        })
+        
+        document.getElementById("start").addEventListener("click", async () => {
+			const API_KEY = document.getElementById("api-key").value
+			if(API_KEY == ""){
+				notification("Enter")
+			}else{
+				const url = "https://api.openai.com/v1/models"
+				const model = document.getElementById("model")
+				const response = await fetch(url, {
+				method: "GET",
+				headers: {
+					Authorization: `Bearer ${API_KEY}`,
+					"Content-Type": "application/json",
+					},
+				})
+				const result = await response.json()
+				if (result.object == "list") {
+					notification("Session started")
+					start = true
+					let modelList = []
+					result.data.forEach((e) => {
+					if (e.id.includes("gpt")) {
+					modelList.push(e.id)
+				}
+				})
+				
+				let index = modelList.findIndex((e) => e == "gpt-4")
+				if (index) modelList.unshift(modelList.splice(index, 1)[0])
+				index = modelList.findIndex((e) => e == "gpt-3.5-turbo")
+				if (index) modelList.unshift(modelList.splice(index, 1)[0])
+
+				for (i in modelList) {
+					const newModel = document.createElement("option")
+					newModel.value = modelList[i]
+					newModel.innerText = modelList[i]
+					model.appendChild(newModel)
+					}
+				}
+			}
+        })
+        
+        const textInputs = [
+          document.getElementById("temperature"),
+          document.getElementById("maxlength"),
+          document.getElementById("topP"),
+          document.getElementById("frequencyPenalty"),
+          document.getElementById("presencePenalty"),
+        ]
+        
+        const sliderInputs = [
+          document.getElementById("temperatureSlider"),
+          document.getElementById("maxlengthSlider"),
+          document.getElementById("topPSlider"),
+          document.getElementById("frequencyPenaltySlider"),
+          document.getElementById("presencePenaltySlider"),
+        ]
+        
+        for (let i = 0; i < textInputs.length; i++) {
+          joinInputs(textInputs[i], sliderInputs[i])
+        }
+        
+        function joinInputs(textInput, sliderInput) {
+          textInput.addEventListener("input", (e) => {
+			e.preventDefault
+            const newValue = textInput.value.replace(/\D/g, "")
+			if(newValue <= parseInt(sliderInput.max) && newValue >= parseInt(sliderInput.min)){
+				textInput.value = newValue
+				sliderInput.value = newValue
+			}else if(newValue > parseInt(sliderInput.max)){
+				textInput.value =  parseInt(sliderInput.max)
+				sliderInput.value =  parseInt(sliderInput.max)
+			}else{
+				textInput.value =  parseInt(sliderInput.min)
+				sliderInput.value =  parseInt(sliderInput.min)
+			}
+          })
+          sliderInput.addEventListener("input", (e) => {
+            textInput.value = sliderInput.value
+          })
+        }
+        
+        document.getElementById("system-remove").addEventListener("click", (e) => {
+            document.getElementById("system-container").classList.add("display-none")
+            document.getElementById("show-system").classList.remove("display-none")
+        })
+        
+        document.getElementById("history-remove").addEventListener("click", (e) => {
+            document.getElementById("history-container").classList.add("display-none")
+            document.getElementById("show-history").classList.remove("display-none")
+        })
+        
+        document.getElementById("show-history").addEventListener("click", () => {
+          document.getElementById("history-container").classList.toggle("display-none")
+          document.getElementById("show-history").classList.add("display-none")
+        })
+        
+        document.getElementById("show-system").addEventListener("click", () => {
+          document.getElementById("system-container").classList.toggle("display-none")
+          document.getElementById("show-system").classList.add("display-none")
+        })
+        
+        document.getElementById("view-code").addEventListener("click", (e) => {
+          e.preventDefault
+          const codeContainer = document.getElementById("code-container")
+          const codeLines = document.createElement("pre")
+          codeLines.classList.add("select-none")
+          const codeString = `${JSON.stringify(getQuery(), null, 2)}`
+          //https://stackoverflow.com/a/43820645
+          const lines = (String(codeString).match(/\n/g) || "").length + 1
+          codeLines.classList.add("code-line")
+          for (let i = 0; i < lines; i++) {
+            codeLines.textContent += i == 0 ? i + 1 : "\n" + (i + 1)
+          }
+          codeContainer.appendChild(codeLines)
+          const viewCode = document.createElement("pre")
+          viewCode.classList.add("view-code-content")
+          viewCode.textContent = codeString
+          codeContainer.appendChild(viewCode)
+          document.getElementById("view-code-dialog").showModal()
+        })
+        
+        document.getElementById("view-code-copy").addEventListener("click", () => {
+			const text = document.querySelector(".view-code-content").textContent
+			navigator.clipboard.writeText(text).then(() => {
+			  notification("Code Copied")
+			})
+		  })
+        
+        function notification(text) {
+          const notificationElement = document.getElementById("notification")
+		  //sadly this doesn't allow the notification to appear above another dialog
+		  notificationElement.show()
+          notificationElement.innerText = text
+          notificationElement.classList.add("show-notification")
+          setTimeout(function () {
+            notificationElement.classList.remove("show-notification")
+            notificationElement.classList.add("hide-notification")
+          }, 2000)
+          notificationElement.classList.remove("hide-notification")
+        }
+        
+        document.getElementById("view-code-close").addEventListener("click", () => {
+			document.querySelector("#code-container").replaceChildren()
+            document.getElementById("view-code-dialog").close()
+        })
+        
+        document.addEventListener("DOMContentLoaded", function () {
+          const systemMessage = document.getElementById("system-message")
+          new TextareaAutoSize(systemMessage)
+          //automatically add user on startup
+          //addNewChatBox("user")
+          const submitWidth =
+            document.getElementById("submit-button").offsetWidth
+          const cancelButton = document.createElement("span")
+          cancelButton.classList.add("button-7")
+          cancelButton.style.visibility = "hidden"
+          cancelButton.style.position = "absolute"
+          cancelButton.innerText = "cancel"
+          document.body.appendChild(cancelButton)
+          const cancelWidth = cancelButton.offsetWidth
+          document.body.removeChild(cancelButton)
+          if (submitWidth > cancelWidth) {
+            document.getElementById("submit-button").style.minWidth =
+              submitWidth + "px"
+          } else {
+            document.getElementById("submit-button").style.minWidth =
+              cancelWidth + "px"
+          }
+          const page_url = String(window.location)
+          if (page_url.includes("#")) {
+            const api_key = page_url.split("#")[1]
+            document.getElementById("api-key").value = api_key
+          }
+        })
+        
+        const input = document.querySelector("[contenteditable=true]")
+        const tags = document.querySelector(".stop-sequence-tag-container")
+        input.addEventListener("keydown", (e) => {
+          if (e.keyCode == 13) {
+            let tag = document.createElement("span")
+            if (input.innerText != "") {
+              tag.innerText = input.innerText
+              tag.classList.add("stop-sequence-tag")
+              tags.appendChild(tag)
+              input.innerText = ""
+            }
+            e.preventDefault()
+          } else {
+            if (
+              e.code == "Delete" ||
+              (e.code == "Backspace" && input.innerText == "")
+            ) {
+              const lastTag = document.querySelector(
+                ".stop-sequence-tag:last-of-type",
+              )
+              lastTag.remove()
+            }
+          }
+        })
+        
+        document.body.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" && (event.metakey || event.ctrlKey)) {
+            handleSubmit()
+          }
+        })
+        
+        submit.addEventListener("click", handleSubmit)
+        
+        function handleSubmit() {
+          if (submit.innerText == "submit") {
+            window.blur()
+            if (start) {
+              submitMessages()
+            } else {
+			  if (document.getElementById("api-key").value == ""){
+				notification("Enter API key and press Start to begin")
+			  }else{
+				notification("Press Start to begin")
+			  }
+            }
+            submit.innerText = "cancel"
+          } else {
+            breakStream = true
+            submit.innerText = "submit"
+          }
+        }
+        
+        async function submitMessages() {
+          let query = getQuery()
+          const API_KEY = document.getElementById("api-key").value
+          const url = "https://api.openai.com/v1/chat/completions"
+          const response = await fetch(url, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${API_KEY}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(query),
+          })
+          let message = ""
+          const reader = response.body
+            ?.pipeThrough(new TextDecoderStream())
+            .getReader()
+          if (!reader) return
+          // https://stackoverflow.com/a/75751803
+          // eslint-disable-next-line no-constant-condition
+          while (!breakStream) {
+            // eslint-disable-next-line no-await-in-loop
+            const { value, done } = await reader.read()
+            if (done) break
+            let dataDone = false
+            const arr = value.split("\n")
+            arr.forEach((data) => {
+              if (data.length === 0) return // ignore empty message
+              if (data.startsWith(":")) return // ignore sse comment message
+              if (data == "data: [DONE]") {
+                dataDone = true
+                return
+              }
+              const json = JSON.parse(data.substring(6))
+              if (json.choices[0].delta.finish_reason == "stop") {
+                done = true
+                dataDone = true
+                return
+              }
+              const content = json.choices[0].delta.content
+              if (content == "") {
+                addNewChatBox("assistant")
+                document.getElementById("add-message").classList.add("display-none")
+                const chatScrollContainer =
+                  document.getElementById("chat-container")
+                chatScrollContainer.scrollTop = chatScrollContainer.scrollHeight
+              }
+              if (done != true && content != null) {
+                message += content
+                const currentChat = document.querySelector("#chat .chat-item:last-child textarea",)
+                const chatScrollContainer = document.getElementById("chat-container")
+                const bottom = chatScrollContainer.scrollHeight - chatScrollContainer.scrollTop - chatScrollContainer.clientHeight
+                currentChat.value += content
+                const oldHeight = currentChat.style.height
+                currentChat.style.height = `${currentChat.scrollHeight}px`
+                const changed = oldHeight != currentChat.style.height
+                if (changed && bottom < 1) {
+                  chatScrollContainer.scrollTop =
+                    chatScrollContainer.scrollHeight
+                }
+              }
+            })
+            if (dataDone) break
+          }
+          document.getElementById("add-message").classList.remove("display-none")
+          const chatScrollContainer = document.getElementById("chat-container")
+          chatScrollContainer.scrollTop = chatScrollContainer.scrollHeight
+          breakStream = false
+          document.getElementById("submit-button").innerText = "submit"
+          query.messages.push({ role: "assistant", content: message })
+          history.push(query)
+          updateHistory()
+        }
+        
+        function getQuery() {
+          let model = document.getElementById("model").value
+          let temperature = document.getElementById("temperature").value
+          let maxlength = document.getElementById("maxlength").value
+          let topP = document.getElementById("topP").value
+          let frequencyPenalty = document.getElementById("frequencyPenalty").value
+          let presencePenalty = document.getElementById("presencePenalty").value
+          let query = {
+            model: model,
+            messages: getMessages(),
+            temperature: Number(temperature),
+            max_tokens: Number(maxlength),
+            top_p: Number(topP),
+            frequency_penalty: Number(frequencyPenalty),
+            presence_penalty: Number(presencePenalty),
+            stop: getStopSequnces(),
+            stream: true,
+          }
+          return query
+        }
+        
+        function getMessages() {
+          let messages = []
+          document.querySelectorAll(".chat-item").forEach((chatItem) => {
+            messages.push({
+              role: chatItem.querySelector(".chat-item-role").innerText,
+              content: chatItem.querySelector(".chat-item-textarea").value,
+            })
+          })
+          return messages
+        }
+        
+        function getStopSequnces() {
+          let tags = []
+          document.querySelectorAll(".stop-sequence-tag").forEach((tag) => {
+            let escapedTag = ""
+            for (const c of tag.innerText) {
+              if (c == "\\" || c == '"') {
+                escapedTag += "\\"
+              }
+              escapedTag += c
+            }
+            console.log(escapedTag)
+            tags.push(escapedTag)
+          })
+          return tags
+        }
+        
+        function addNewChatBox(role) {
+        /*
+        looks something like
+        <div class="chat-item">
+        <span class="chat-item-role-container">
+        <div class="chat-item-role button-4">user</div>
+        </span>
+        <textarea placeholder="Enter a user message here" class="chat-item-textarea" style="height: 70px"></textarea>
+        <span class="chat-item-remove">⊖</span>
+        </div>
+        */
+          const newChatItem = document.createElement("div")
+          newChatItem.classList.add("chat-item")
+          const newChatItemRole = document.createElement("div")
+          const newChatItemRoleContainer = document.createElement("span")
+          newChatItemRoleContainer.classList.add("chat-item-role-container")
+          newChatItemRoleContainer.appendChild(newChatItemRole)
+          newChatItemRole.classList.add("chat-item-role")
+          newChatItemRole.classList.add("button-4")
+          newChatItemRole.innerText = role
+          const newChatItemTextArea = document.createElement("textarea")
+          if (role == "user") {
+            newChatItemTextArea.placeholder = "Enter a user message here"
+          } else {
+            newChatItemTextArea.placeholder = "Enter an assistant message here"
+          }
+          newChatItemTextArea.classList.add("chat-item-textarea")
+          if (document.getElementById("current-chat-response") != null) {
+            document
+              .getElementById("current-chat-response")
+              .removeAttribute("id")
+          }
+          newChatItemTextArea.id = "current-chat-response"
+          new TextareaAutoSize(newChatItemTextArea)
+          const newRemove = document.createElement("span")
+          newRemove.innerText = "⊖"
+          newRemove.classList.add("chat-item-remove")
+          newChatItem.appendChild(newChatItemRoleContainer)
+          newChatItem.appendChild(newChatItemTextArea)
+          newChatItem.appendChild(newRemove)
+          chat.appendChild(newChatItem)
+          newRemove.addEventListener("click", (e) => {
+            e.target.parentNode.remove()
+          })
+          newChatItem.addEventListener("click", (e) => {
+            if (e.target.innerText == "user") {
+              e.target.innerText = "assistant"
+            } else {
+              e.target.innerText = "user"
+            }
+          })
+        }
+        
+        function updateHistory() {
+          const h = document.getElementById("history")
+          const newEntry = history.at(-1)
+          const newHistoryItem = document.createElement("div")
+          newHistoryItem.classList.add("history-item")
+          newHistoryItem.classList.add("pointer")
+          newHistoryItem.innerText = newEntry.messages.at(-1).content
+          newHistoryItem.setAttribute("data-history-index", history.length - 1)
+          h.appendChild(newHistoryItem)
+          newHistoryItem.addEventListener("click", (e) => {
+            createChatFromHistory(e.target.dataset.historyIndex)
+          })
+        }
+        
+        function createChatFromHistory(index) {
+          const historyList = history[index]
+          chat.replaceChildren()
+          historyList.messages.forEach((e) => {
+            addNewChatBox(e.role)
+            const currentChatText = document.querySelector(
+              "#chat .chat-item:last-child textarea",
+            )
+            currentChatText.value = e.content
+            currentChatText.style.height = `${currentChatText.scrollHeight}px`
+          })
+        }
+		
+        //https://javierjulio.com/textarea-autosize/
+        class TextareaAutoSize {
+          constructor(element) {
+            this.element = element
+            element.value = element.placeholder
+        
+            this._inputHandler = this._inputHandler.bind(this)
+            element.addEventListener("input", this._inputHandler)
+            window.addEventListener("resize", () => {
+              if (element.value == "") {
+                element.value = element.placeholder
+                this.update()
+                element.value = ""
+              } else {
+                this.update()
+              }
+            })
+        
+            this.update()
+            element.value = ""
+          }
+        
+          _inputHandler(event) {
+            this.update()
+          }
+        
+          destroy() {
+            this.removeEventListener("input", this._inputHandler)
+            this.element = null
+          }
+        
+          update() {
+            //set height back to minimum in order to shrink the textarea
+            const smallestHeight = this._styleProp("fontSize")
+            this.element.style.height = `${smallestHeight}px`
+        
+            // Firefox still triggers a vertical scrollbar but as long as we add the
+            // top/bottom padding to the scroll height, it's not shown. Other browsers
+            // do the same regardless of whether this value is added or not.
+            const newHeight = this.element.scrollHeight // + this.verticalBorderSize
+            this.element.style.height = `${newHeight}px`
+          }
+        
+          _styleProp(name) {
+            const computedStyle = getComputedStyle(this.element, null)
+            return parseInt(computedStyle[name])
+          }
+        }
+    </script>
+</body>
+
+</html>
