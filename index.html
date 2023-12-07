@@ -2,6 +2,8 @@
 <html>
 
 <head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
 <style>
 	/*! buttons from https://getcssscan.com/css-buttons-examples */
 	.button-2 {
@@ -107,41 +109,6 @@
 	.button-4:-webkit-details-marker {
 		display: none;
 	}
-	.button-7 {
-		background-color: #0095ff;
-		border: 1px solid transparent;
-		border-radius: 3px;
-		box-shadow: rgba(255, 255, 255, .4) 0 1px 0 0 inset;
-		box-sizing: border-box;
-		color: #fff;
-		cursor: pointer;
-		display: inline-block;
-		font-family: -apple-system,system-ui,"Segoe UI",sans-serif;
-		font-size: 13px;
-		font-weight: 400;
-		line-height: 1.15385;
-		margin: 0;
-		outline: none;
-		padding: 8px .8em;
-		position: relative;
-		text-align: center;
-		text-decoration: none;
-		user-select: none;
-		-webkit-user-select: none;
-		touch-action: manipulation;
-		vertical-align: baseline;
-	}
-	.button-7:hover,
-	.button-7:focus {
-		background-color: #07c;
-	}
-	.button-7:focus {
-		box-shadow: 0 0 0 4px rgba(0, 149, 255, .15);
-	}
-	.button-7:active {
-		background-color: #0064bd;
-		box-shadow: none;
-	}
 	html, body {
 		height: 100%;
 		margin-bottom: 0;
@@ -187,6 +154,7 @@
 	#header{
 		display: flex;
 		justify-content: flex-end;
+		overflow: auto;
 		gap: 5px;
 	}
 	#body{
@@ -325,11 +293,12 @@
 		color: grey;
 	}
 	.menu-container{
+		padding-top: 15px;
 		width: 15%;
 		display: flex;
 		flex-grow: 0;
 		flex-direction: column;
-		justify-content: space-between;
+		gap: 10px;
 	}
 	.menu-item{
 		padding-top: 8px;
@@ -459,6 +428,9 @@
 	.display-flex{
 		display: flex;
 	}
+	.flex-wrap{
+		flex-wrap: wrap;
+	}
 	.flex-column{
 		flex-direction: column
 	}
@@ -506,27 +478,58 @@
 	.justify-content-center{
 		justify-content: center;
 	}
+	.justify-content-space-between{
+		justify-content: space-between;
+	}
 	.width-min-content{
 		width: min-content;
 	}
+	#history-container{
+		display: none;
+	}
+	#show-menu{
+		display: none;
+	}
+	#show-system{
+		display: none;
+	}
+	@media (max-width: 850px) {
+		#system-container{
+			display: none;
+		}
+		#show-system{
+			display: inline-block;
+		}	
+		#show-menu{
+			display: inline-block;
+		}
+		.menu-container{
+			display: none;
+		}
+		#header{
+			justify-content: flex-Start;
+		}
+	}
+	
+
 </style>
 </head>
 <body>
     <div id="flex-container">
-        <div id="header">
+        <div id="header" class = "display-flex">
             <div class="button-1"> <input placeholder="OpenAI Key" id="api-key" class="button-4" /> </div>
             <div id="start" class="button-4">Start</div>
             <div id="view-code" class="button-4">View Code</div>
         </div>
         <div id="body">
-            <div id="system-container" class="system-container">
-                <div style="display: flex; justify-content: space-between"> 
+            <div id="system-container" class="system-container system-container-display-initial">
+                <div class = "display-flex justify-content-space-between"> 
 					<span id="system-title">system</span> 
 					<span id="system-remove" style="padding-right: 8px; padding-top: 6px">⊖</span>
 				</div>
 				<textarea id="system-message" placeholder="You are a helpful assistant."></textarea>
             </div>
-            <div id="history-container" class="history-container display-none">
+            <div id="history-container" class="history-container">
                 <div style="display: flex; justify-content: space-between"> 
 					<span id="history-title"> history </span> 
 					<span id="history-remove" style="padding-right: 8px; padding-top: 6px">⊖</span> 
@@ -541,11 +544,16 @@
                 </div>
                 <div id="options"> 
 					<span id="submit-button" class="button-2"> submit </span>
-					<span id="show-history" class="button-2"> show history </span> 
-					<span id="show-system" class="button-2 display-none"> show system </span> 
+					<span id="show-history" class="button-2"> history </span> 
+					<span id="show-system" class="button-2"> system </span>
+					<span id="show-menu" class="button-2"> menu </span>
 				</div>
             </div>
-            <div class="menu-container">
+            <div id = "menu-container" class="menu-container">
+				<div id = "menu-title-container" class = "display-flex justify-content-space-between">
+					<span id="system-title">menu</span> 
+					<span id="menu-remove" style="padding-right: 8px; padding-top: 6px">⊖</span>
+				</div>
                 <div class="menu-item model-select">
                     <div class="menu-item">Model</div>
 					<select id="model" class="width-100"></select>
@@ -726,23 +734,33 @@
         }
         
         document.getElementById("system-remove").addEventListener("click", (e) => {
-            document.getElementById("system-container").classList.add("display-none")
-            document.getElementById("show-system").classList.remove("display-none")
+            document.getElementById("system-container").style.display = "none"
+            document.getElementById("show-system").style.display = "inline-block"
         })
         
         document.getElementById("history-remove").addEventListener("click", (e) => {
-            document.getElementById("history-container").classList.add("display-none")
-            document.getElementById("show-history").classList.remove("display-none")
+            document.getElementById("history-container").style.display = "none"
+            document.getElementById("show-history").style.display = "inline-block"
+        })       
+
+		document.getElementById("menu-remove").addEventListener("click", (e) => {
+            document.getElementById("menu-container").style.display = "none"
+            document.getElementById("show-menu").style.display = "inline-block"
         })
         
         document.getElementById("show-history").addEventListener("click", () => {
-          document.getElementById("history-container").classList.toggle("display-none")
-          document.getElementById("show-history").classList.add("display-none")
+          document.getElementById("history-container").style.display = "flex"
+          document.getElementById("show-history").style.display = "none"
         })
         
         document.getElementById("show-system").addEventListener("click", () => {
-          document.getElementById("system-container").classList.toggle("display-none")
-          document.getElementById("show-system").classList.add("display-none")
+          document.getElementById("system-container").style.display = "flex"
+          document.getElementById("show-system").style.display = "none"
+        })
+		
+		document.getElementById("show-menu").addEventListener("click", () => {
+          document.getElementById("menu-container").style.display = "flex"
+          document.getElementById("show-menu").style.display = "none"
         })
         
         document.getElementById("view-code").addEventListener("click", (e) => {
