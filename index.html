@@ -539,7 +539,7 @@
             <div id="chat-column">
                 <div id="chat-container">
                     <div id="chat"></div>
-                    <div id="add-message" class="pointer"> &nbsp&nbsp ⊕ &nbsp Add Message </div>
+                    <div id="add-message" class="pointer select-none"> &nbsp&nbsp ⊕ &nbsp Add Message </div>
                     <div id="add-message-container" class="should-delete-soon"></div>
                 </div>
                 <div id="options"> 
@@ -678,9 +678,9 @@
 				}
 				})
 				
-				let index = modelList.findIndex((e) => e == "gpt-4")
+				let index = modelList.findIndex((e) => e == "gpt-3.5-turbo")
 				if (index) modelList.unshift(modelList.splice(index, 1)[0])
-				index = modelList.findIndex((e) => e == "gpt-3.5-turbo")
+				index = modelList.findIndex((e) => e == "gpt-4")
 				if (index) modelList.unshift(modelList.splice(index, 1)[0])
 
 				for (i in modelList) {
