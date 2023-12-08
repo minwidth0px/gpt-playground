@@ -2,7 +2,7 @@
 <html>
 
 <head>
-
+<title>gptui</title>
 <meta name="viewport" content="width=device-width, initial-scale=1"> 
 <style>
 	/*! buttons from https://getcssscan.com/css-buttons-examples */
@@ -127,6 +127,8 @@
 		border: none;
 		background-color: inherit;
 		min-width: 5px;
+		font-size: inherit;
+		font-family: inherit;
 	}
 	textarea:focus {
 		background-color: white;
@@ -367,6 +369,7 @@
 		border-radius: 5px;
 		padding: 1rem;
 		font-size: 16px;
+		width: 50%;
 	}
 	#view-code-container{
 		margin-top: 12px;
@@ -525,6 +528,9 @@
 		#header{
 			justify-content: flex-Start;
 		}
+		.view-code-dialog{
+			width: 80%;
+		}
 	}
 	
 
@@ -613,7 +619,7 @@
         </div>
     </div>
 	<dialog id="notification" class="button-4"></dialog>
-    <dialog id="view-code-dialog" class="view-code-dialog width-50">
+    <dialog id="view-code-dialog" class="view-code-dialog">
         <div class="min-width-0px display-flex flex-grow-1 flex-column">
             <div class="select-none">View Code</div>
             <div id="view-code-container" class="display-flex flex-column">
@@ -733,7 +739,10 @@
           textInput.addEventListener("input", (e) => {
 			e.preventDefault
             const newValue = textInput.value.replace(/\D/g, "")
-			if(newValue <= parseInt(sliderInput.max) && newValue >= parseInt(sliderInput.min)){
+			if(newValue == ""){
+				textInput.value = 0
+				sliderInput.value = 0
+			}else if(newValue <= parseInt(sliderInput.max) && newValue >= parseInt(sliderInput.min)){
 				textInput.value = newValue
 				sliderInput.value = newValue
 			}else if(newValue > parseInt(sliderInput.max)){
