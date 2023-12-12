@@ -674,6 +674,59 @@
         })
         
         document.getElementById("start").addEventListener("click", connect)
+		
+		
+		
+		function setModels(modelList){
+			const model = document.getElementById("model")
+			for (i in modelList) {
+				const newModel = document.createElement("option")
+				newModel.value = modelList[i]
+				newModel.innerText = modelList[i]
+				model.appendChild(newModel)
+			
+			}
+		}
+		
+		
+        document.addEventListener("DOMContentLoaded", function () {
+          const systemMessage = document.getElementById("system-message")
+          new TextareaAutoSize(systemMessage)
+          //automatically add user on startup
+          //addNewChatBox("user")
+          const submitWidth =
+            document.getElementById("submit-button").offsetWidth
+          const cancelButton = document.createElement("span")
+          cancelButton.classList.add("button-7")
+          cancelButton.style.visibility = "hidden"
+          cancelButton.style.position = "absolute"
+          cancelButton.innerText = "cancel"
+          document.body.appendChild(cancelButton)
+          const cancelWidth = cancelButton.offsetWidth
+          document.body.removeChild(cancelButton)
+          if (submitWidth > cancelWidth) {
+            document.getElementById("submit-button").style.minWidth =
+              submitWidth + "px"
+          } else {
+            document.getElementById("submit-button").style.minWidth =
+              cancelWidth + "px"
+          }
+		  
+		  if (localStorage.getItem("modelList") !== null) {
+			document.getElementById("api-key").value = localStorage.getItem("API_KEY")
+			const models = JSON.parse(localStorage.getItem("modelList"))
+			setModels(models)
+			start = true
+		  }else{
+			const page_url = String(window.location)
+			if (page_url.includes("#")) {
+				const api_key = page_url.split("#")[1]
+				document.getElementById("api-key").value = api_key
+				connect()
+			}
+		  }
+        })
+        
         
 		async function connect(){
 			const API_KEY = document.getElementById("api-key").value
@@ -681,7 +734,6 @@
 				notification("Enter")
 			}else{
 				const url = "https://api.openai.com/v1/models"
-				const model = document.getElementById("model")
 				const response = await fetch(url, {
 				method: "GET",
 				headers: {
@@ -695,25 +747,25 @@
 					start = true
 					let modelList = []
 					result.data.forEach((e) => {
-					if (e.id.includes("gpt")) {
-					modelList.push(e.id)
-				}
-				})
-				
-				let index = modelList.findIndex((e) => e == "gpt-3.5-turbo")
-				if (index) modelList.unshift(modelList.splice(index, 1)[0])
-				index = modelList.findIndex((e) => e == "gpt-4")
-				if (index) modelList.unshift(modelList.splice(index, 1)[0])
+						if (e.id.includes("gpt")) {
+							modelList.push(e.id)
+						}
+					})
+			
+					let index = modelList.findIndex((e) => e == "gpt-3.5-turbo")
+					if (index) modelList.unshift(modelList.splice(index, 1)[0])
+					index = modelList.findIndex((e) => e == "gpt-4")
+					if (index) modelList.unshift(modelList.splice(index, 1)[0])
 
-				for (i in modelList) {
-					const newModel = document.createElement("option")
-					newModel.value = modelList[i]
-					newModel.innerText = modelList[i]
-					model.appendChild(newModel)
-					}
+					setModels(modelList)
+					localStorage.setItem('modelList', JSON.stringify(modelList));
+					localStorage.setItem('API_KEY', API_KEY);
 				}
+				
 			}
 		}
+		
+		
 		
         const textInputs = [
           document.getElementById("temperature"),
@@ -831,36 +883,6 @@
         document.getElementById("view-code-close").addEventListener("click", () => {
 			document.querySelector("#code-container").replaceChildren()
             document.getElementById("view-code-dialog").close()
-        })
-        
-        document.addEventListener("DOMContentLoaded", function () {
-          const systemMessage = document.getElementById("system-message")
-          new TextareaAutoSize(systemMessage)
-          //automatically add user on startup
-          //addNewChatBox("user")
-          const submitWidth =
-            document.getElementById("submit-button").offsetWidth
-          const cancelButton = document.createElement("span")
-          cancelButton.classList.add("button-7")
-          cancelButton.style.visibility = "hidden"
-          cancelButton.style.position = "absolute"
-          cancelButton.innerText = "cancel"
-          document.body.appendChild(cancelButton)
-          const cancelWidth = cancelButton.offsetWidth
-          document.body.removeChild(cancelButton)
-          if (submitWidth > cancelWidth) {
-            document.getElementById("submit-button").style.minWidth =
-              submitWidth + "px"
-          } else {
-            document.getElementById("submit-button").style.minWidth =
-              cancelWidth + "px"
-          }
-          const page_url = String(window.location)
-          if (page_url.includes("#")) {
-            const api_key = page_url.split("#")[1]
-            document.getElementById("api-key").value = api_key
-			connect()
-          }
         })
         
         const input = document.querySelector("[contenteditable=true]")
