@@ -714,7 +714,7 @@
 			const page_url = String(window.location)
 			if (page_url.includes("#")) {
 				const api_key = page_url.split("#")[1]
-				if (localStorage.getItem("modelList") == api_key) {
+				if (document.getElementById("api-key").value == api_key) {
 					document.getElementById("api-key").value = localStorage.getItem("API_KEY")
 					const models = JSON.parse(localStorage.getItem("modelList"))
 					setModels(models)
