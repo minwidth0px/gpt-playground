@@ -711,20 +711,26 @@
             document.getElementById("submit-button").style.minWidth =
               cancelWidth + "px"
           }
-		  
-		  if (localStorage.getItem("modelList") !== null) {
-			document.getElementById("api-key").value = localStorage.getItem("API_KEY")
-			const models = JSON.parse(localStorage.getItem("modelList"))
-			setModels(models)
-			start = true
-		  }else{
 			const page_url = String(window.location)
 			if (page_url.includes("#")) {
 				const api_key = page_url.split("#")[1]
-				document.getElementById("api-key").value = api_key
-				connect()
+				if (localStorage.getItem("modelList") == api_key) {
+					document.getElementById("api-key").value = localStorage.getItem("API_KEY")
+					const models = JSON.parse(localStorage.getItem("modelList"))
+					setModels(models)
+					start = true
+				}else{
+					document.getElementById("api-key").value = api_key
+					connect()
+				}
+			}else{
+				if (localStorage.getItem("modelList") !== null) {
+					document.getElementById("api-key").value = localStorage.getItem("API_KEY")
+					const models = JSON.parse(localStorage.getItem("modelList"))
+					setModels(models)
+					start = true
+				}
 			}
-		  }
         })
         
         
