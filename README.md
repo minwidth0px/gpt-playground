@@ -1,5 +1,5 @@
 # gpt-playground
-Simple HTML Openai API UI
+Simple HTML OpenAI API UI
 
 ### Usage
 
