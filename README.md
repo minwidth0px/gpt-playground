@@ -1,7 +1,13 @@
 # gpt-playground
 Simple HTML Openai API UI
 
-### development
+### Usage
+
+You can put your API key at the end of the URI fragment like so to connect automatically:
+
+`https://minwidth0px.github.io/gpt-playground/#API_KEY`
+
+### Development
 
 If you wish to play around with this code, you may want to test the functionality without submiting API requests for each change. To do this, create a function like
 
