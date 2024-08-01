@@ -718,7 +718,7 @@
 			if (page_url.includes("#")) {
 				const params = new URLSearchParams(page_url.split("#")[1])
 				const api_key = params.get("key")
-				const url = params.get("url")
+				const url = params.get("url").replace(/\/$/, '');
 				if (url != null) baseUrl = url
 				if (document.getElementById("api-key").value == api_key) {
 					document.getElementById("api-key").value = localStorage.getItem("API_KEY")
@@ -748,7 +748,7 @@
         
 		async function connect(){
 			const API_KEY = document.getElementById("api-key").value
-			const BASE_URL = document.getElementById("base-url").value
+			const BASE_URL = document.getElementById("base-url").value.replace(/\/$/, '');
 			if(API_KEY == ""){
 				notification("Enter api key")
 			}else if(BASE_URL == ""){
@@ -768,7 +768,7 @@
 				console.log(result)
 				start = true
 				if (result.object == "list") {
-					notification("Session started")
+					//notification("Session started")
 					start = true
 					let modelList = []
 					result.data.forEach((e) => {
@@ -1000,6 +1000,7 @@
                 dataDone = true
                 return
               }
+			  console.log(data)
               const json = JSON.parse(data.substring(6))
               if (json.choices[0].delta.finish_reason == "stop") {
                 done = true
