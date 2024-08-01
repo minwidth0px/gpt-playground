@@ -5,7 +5,7 @@ Simple HTML OpenAI API UI
 
 You can put your API key at the end of the URI fragment like so to connect automatically:
 
-`https://minwidth0px.github.io/gpt-playground/#API_KEY`
+`https://minwidth0px.github.io/gpt-playground/#key=API_KEY&url=https://api.openai.com`
 
 ### Development
 
