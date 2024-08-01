@@ -539,7 +539,8 @@
 <body>
     <div id="flex-container">
         <div id="header" class = "display-flex">
-            <div class="button-1"> <input placeholder="OpenAI Key" id="api-key" class="button-4" /> </div>
+			<div class="button-1"> <input placeholder="URL" id="base-url" class="button-4" /> </div>
+			<div class="button-1"> <input placeholder="Key" id="api-key" class="button-4" /> </div>
             <div id="start" class="button-4">Start</div>
             <div id="view-code" class="button-4">View Code</div>
         </div>
@@ -636,9 +637,11 @@
     <script>
         const submit = document.getElementById("submit-button")
         const chat = document.getElementById("chat")
+		let baseUrl = ''
         let history = []
         let breakStream = false
         let start = false
+		let controller
         
         document.addEventListener("click", (e) => {
           if (document.querySelector(".chat-item-focued") != null) {
@@ -713,19 +716,28 @@
           }
 			const page_url = String(window.location)
 			if (page_url.includes("#")) {
-				const api_key = page_url.split("#")[1]
+				const params = new URLSearchParams(page_url.split("#")[1])
+				const api_key = params.get("key")
+				const url = params.get("url")
+				if (url != null) baseUrl = url
 				if (document.getElementById("api-key").value == api_key) {
 					document.getElementById("api-key").value = localStorage.getItem("API_KEY")
+					document.getElementById("base-url").value = localStorage.getItem("BASE_URL")
 					const models = JSON.parse(localStorage.getItem("modelList"))
 					setModels(models)
 					start = true
 				}else{
-					document.getElementById("api-key").value = api_key
-					connect()
+					if(api_key != null && url != null){
+						document.getElementById("api-key").value = api_key
+						document.getElementById("base-url").value = url
+						console.log("we are here")
+						connect()
+					}
 				}
 			}else{
 				if (localStorage.getItem("modelList") !== null) {
 					document.getElementById("api-key").value = localStorage.getItem("API_KEY")
+					document.getElementById("base-url").value = localStorage.getItem("BASE_URL")
 					const models = JSON.parse(localStorage.getItem("modelList"))
 					setModels(models)
 					start = true
@@ -736,10 +748,15 @@
         
 		async function connect(){
 			const API_KEY = document.getElementById("api-key").value
+			const BASE_URL = document.getElementById("base-url").value
 			if(API_KEY == ""){
-				notification("Enter")
+				notification("Enter api key")
+			}else if(BASE_URL == ""){
+				notification("Enter base URL")
 			}else{
-				const url = "https://api.openai.com/v1/models"
+				start = true
+				baseUrl = BASE_URL
+				const url = baseUrl+"/models"
 				const response = await fetch(url, {
 				method: "GET",
 				headers: {
@@ -748,6 +765,7 @@
 					},
 				})
 				const result = await response.json()
+				console.log(result)
 				if (result.object == "list") {
 					notification("Session started")
 					start = true
@@ -766,6 +784,7 @@
 					setModels(modelList)
 					localStorage.setItem('modelList', JSON.stringify(modelList));
 					localStorage.setItem('API_KEY', API_KEY);
+					localStorage.setItem('BASE_URL', BASE_URL);
 				}
 				
 			}
@@ -938,6 +957,7 @@
             }
             submit.innerText = "cancel"
           } else {
+			controller.abort()
             breakStream = true
             submit.innerText = "submit"
           }
@@ -945,9 +965,11 @@
         
         async function submitMessages() {
           let query = getQuery()
+		  controller = new AbortController();
           const API_KEY = document.getElementById("api-key").value
-          const url = "https://api.openai.com/v1/chat/completions"
+          const url = baseUrl+"/v1/chat/completions"
           const response = await fetch(url, {
+			signal: controller.signal,
             method: "POST",
             headers: {
               Authorization: `Bearer ${API_KEY}`,
@@ -962,6 +984,7 @@
           if (!reader) return
           // https://stackoverflow.com/a/75751803
           // eslint-disable-next-line no-constant-condition
+		  let firstRes = true
           while (!breakStream) {
             // eslint-disable-next-line no-await-in-loop
             const { value, done } = await reader.read()
@@ -982,7 +1005,8 @@
                 return
               }
               const content = json.choices[0].delta.content
-              if (content == "") {
+              if (content == "" || firstRes == true) {
+				firstRes = false
                 addNewChatBox("assistant")
                 document.getElementById("add-message").classList.add("display-none")
                 const chatScrollContainer =
