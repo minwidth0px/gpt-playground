@@ -972,6 +972,7 @@
 			signal: controller.signal,
             method: "POST",
             headers: {
+			  ngrok-skip-browser-warning: "1",
               Authorization: `Bearer ${API_KEY}`,
               "Content-Type": "application/json",
             },
