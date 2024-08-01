@@ -754,9 +754,9 @@
 			}else if(BASE_URL == ""){
 				notification("Enter base URL")
 			}else{
-				start = true
 				baseUrl = BASE_URL
-				const url = baseUrl+"/models"
+				const url = baseUrl+"/v1/models"
+				console.log(API_KEY)
 				const response = await fetch(url, {
 				method: "GET",
 				headers: {
@@ -766,6 +766,7 @@
 				})
 				const result = await response.json()
 				console.log(result)
+				start = true
 				if (result.object == "list") {
 					notification("Session started")
 					start = true
