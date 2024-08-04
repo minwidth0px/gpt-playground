@@ -11,9 +11,10 @@
 		background-color: #0095ff;
 		border: 1px solid transparent;
 		border-radius: 6px;
-		//box-shadow: rgba(255, 255, 255, .4) 0 1px 0, rgba(255, 255, 255, .4) 0 1px 0 inset;
+		/*! box-shadow: rgba(255, 255, 255, .4) 0 1px 0, rgba(255, 255, 255, .4) 0 1px 0 inset;
 		//box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
-		box-sizing: border-box;
+		*/
+        box-sizing: border-box;
 		color: #fff;
 		cursor: pointer;
 		display: inline-block;
@@ -50,7 +51,7 @@
 	}
 	.button-2:focus {
 		box-shadow: 0 0 0 4px rgba(0, 149, 255, .15);
-		//outline: 1px transparent;
+		/*! outline: 1px transparent; */
 	}
 	.button-2:before {
 		display: none;
@@ -258,7 +259,7 @@
 		background-color: #f2f2f2;
 	}
 	.chat > .chat-item:last-child{
-		//scroll-snap-align: end;
+		/*! //scroll-snap-align: end; */
 	}
 	.chat-item{
 		display: flex;
@@ -476,8 +477,10 @@
 		width: 100%
 	}
 	.sticky-footer{
+        /*!
 		//position: sticky;
 		//bottom: 0;
+        */
 	}
 	.pointer{
 		cursor: pointer;
@@ -543,6 +546,7 @@
 			<div class="button-1"> <input placeholder="Key" id="api-key" class="button-4" /> </div>
             <div id="start" class="button-4">Start</div>
             <div id="view-code" class="button-4">View Code</div>
+            <div class="button-4"> <input type="checkbox" id="use-smoke" /> Use Smoke </div>
         </div>
         <div id="body">
             <div id="system-container" class="system-container system-container-display-initial">
@@ -634,7 +638,12 @@
 			</div>
         </div>
     </dialog>
-    <script>
+    <script type="module" src="index4.js"></script>
+    <script type="module">
+        import {FetchService} from './index4.js'
+
+        let service = new FetchService()
+
         const submit = document.getElementById("submit-button")
         const chat = document.getElementById("chat")
 		let baseUrl = ''
@@ -682,7 +691,7 @@
 		
 		function setModels(modelList){
 			const model = document.getElementById("model")
-			for (i in modelList) {
+			for (let i in modelList) {
 				const newModel = document.createElement("option")
 				newModel.value = modelList[i]
 				newModel.innerText = modelList[i]
@@ -747,6 +756,7 @@
         
         
 		async function connect(){
+            service.useSmoke = document.getElementById("use-smoke").checked
 			const API_KEY = document.getElementById("api-key").value
 			const BASE_URL = document.getElementById("base-url").value.replace(/\/$/, '');
 			if(API_KEY == ""){
@@ -757,7 +767,7 @@
 				baseUrl = BASE_URL
 				const url = baseUrl+"/v1/models"
 				console.log(API_KEY)
-				const response = await fetch(url, {
+				const response = await service.fetch(url, {
 				method: "GET",
 				headers: {
 					Authorization: `Bearer ${API_KEY}`,
@@ -969,11 +979,10 @@
 		  controller = new AbortController();
           const API_KEY = document.getElementById("api-key").value
           const url = baseUrl+"/v1/chat/completions"
-          const response = await fetch(url, {
+          const response = await service.fetch(url, {
 			signal: controller.signal,
             method: "POST",
             headers: {
-			  "ngrok-skip-browser-warning": "true",
               Authorization: `Bearer ${API_KEY}`,
               "Content-Type": "application/json",
             },
