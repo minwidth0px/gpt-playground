@@ -2867,7 +2867,7 @@ var WebRtcModule = class {
     });
     setTimeout(() => {
       open.reject(new Error(`Connection to '${remoteAddress}:${port}' timed out`));
-    }, 4e3);
+    }, 10e3);
     return await open.promise();
   }
   async addTrack(remoteAddress, track, ...streams) {
