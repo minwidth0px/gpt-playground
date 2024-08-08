@@ -11,10 +11,11 @@
 		background-color: #0095ff;
 		border: 1px solid transparent;
 		border-radius: 6px;
-		/*! box-shadow: rgba(255, 255, 255, .4) 0 1px 0, rgba(255, 255, 255, .4) 0 1px 0 inset;
+		/*
+		//box-shadow: rgba(255, 255, 255, .4) 0 1px 0, rgba(255, 255, 255, .4) 0 1px 0 inset;
 		//box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
 		*/
-        box-sizing: border-box;
+		box-sizing: border-box;
 		color: #fff;
 		cursor: pointer;
 		display: inline-block;
@@ -51,7 +52,7 @@
 	}
 	.button-2:focus {
 		box-shadow: 0 0 0 4px rgba(0, 149, 255, .15);
-		/*! outline: 1px transparent; */
+		/*outline: 1px transparent;*/
 	}
 	.button-2:before {
 		display: none;
@@ -259,7 +260,7 @@
 		background-color: #f2f2f2;
 	}
 	.chat > .chat-item:last-child{
-		/*! //scroll-snap-align: end; */
+		/*scroll-snap-align: end;*/
 	}
 	.chat-item{
 		display: flex;
@@ -477,10 +478,10 @@
 		width: 100%
 	}
 	.sticky-footer{
-        /*!
+		/*
 		//position: sticky;
 		//bottom: 0;
-        */
+		*/
 	}
 	.pointer{
 		cursor: pointer;
@@ -546,7 +547,7 @@
 			<div class="button-1"> <input placeholder="Key" id="api-key" class="button-4" /> </div>
             <div id="start" class="button-4">Start</div>
             <div id="view-code" class="button-4">View Code</div>
-            <div class="button-4"> <input type="checkbox" id="use-smoke" /> Use Smoke </div>
+			<div class="button-4"> <input type="checkbox" id="use-smoke" /> Use Smoke </div>
         </div>
         <div id="body">
             <div id="system-container" class="system-container system-container-display-initial">
@@ -638,12 +639,10 @@
 			</div>
         </div>
     </dialog>
-    <script type="module" src="index4.js"></script>
     <script type="module">
-        import {FetchService} from './index4.js'
 
-        let service = new FetchService()
-
+		import networkService from './networkService.js'
+		
         const submit = document.getElementById("submit-button")
         const chat = document.getElementById("chat")
 		let baseUrl = ''
@@ -696,7 +695,6 @@
 				newModel.value = modelList[i]
 				newModel.innerText = modelList[i]
 				model.appendChild(newModel)
-			
 			}
 		}
 		
@@ -707,7 +705,7 @@
           //automatically add user on startup
           //addNewChatBox("user")
           const submitWidth =
-            document.getElementById("submit-button").offsetWidth
+          document.getElementById("submit-button").offsetWidth
           const cancelButton = document.createElement("span")
           cancelButton.classList.add("button-7")
           cancelButton.style.visibility = "hidden"
@@ -754,50 +752,76 @@
 			}
         })
         
-        
+    
 		async function connect(){
-            service.useSmoke = document.getElementById("use-smoke").checked
+			const urlObj = new URL(document.getElementById("base-url").value)
+			const searchParams = urlObj.searchParams
+			const useSmoke = document.getElementById("use-smoke").checked
+			let ws = null
+			if(useSmoke){
+				const infoHash = searchParams.has("infoHash")? searchParams.get("infoHash") : ""
+				const wsUrl = 'wss://tracker.files.fm:7073'  
+				ws = new WebSocket(wsUrl)
+				const peerId = window.crypto.randomUUID().replaceAll('-', '').slice(0, 20)
+				console.log(`ws: ${wsUrl}, infoHash: ${infoHash}, peerId: ${peerId}, baseUrl: ${urlObj.hostname}`)
+				networkService.setNetwork(ws, infoHash, peerId, urlObj.origin)
+				console.log("we are here")
+				networkService.useSmoke = true
+				networkService.infoHash = infoHash
+			}
+			const BASE_URL = urlObj.origin
 			const API_KEY = document.getElementById("api-key").value
-			const BASE_URL = document.getElementById("base-url").value.replace(/\/$/, '');
 			if(API_KEY == ""){
 				notification("Enter api key")
 			}else if(BASE_URL == ""){
 				notification("Enter base URL")
 			}else{
 				baseUrl = BASE_URL
-				const url = baseUrl+"/v1/models"
-				console.log(API_KEY)
-				const response = await service.fetch(url, {
-				method: "GET",
-				headers: {
-					Authorization: `Bearer ${API_KEY}`,
-					"Content-Type": "application/json",
-					},
-				})
-				const result = await response.json()
-				console.log(result)
-				start = true
-				if (result.object == "list") {
-					//notification("Session started")
-					start = true
-					let modelList = []
-					result.data.forEach((e) => {
-						if (e.id.includes("gpt")) {
-							modelList.push(e.id)
-						}
+				if(ws != null){
+					ws.addEventListener('open', () => {
+						console.log("ws open")
+						getModels()
 					})
-			
-					let index = modelList.findIndex((e) => e == "gpt-3.5-turbo")
-					if (index) modelList.unshift(modelList.splice(index, 1)[0])
-					index = modelList.findIndex((e) => e == "gpt-4")
-					if (index) modelList.unshift(modelList.splice(index, 1)[0])
-
-					setModels(modelList)
-					localStorage.setItem('modelList', JSON.stringify(modelList));
-					localStorage.setItem('API_KEY', API_KEY);
-					localStorage.setItem('BASE_URL', BASE_URL);
+				}else{
+					getModels()	
 				}
-				
+			}
+		}
+
+		async function getModels(){
+			const url = baseUrl+"/v1/models"
+			const API_KEY = document.getElementById("api-key").value
+			const BASE_URL = baseUrl
+			console.log(API_KEY)
+			const response = await networkService.fetch(url, {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${API_KEY}`,
+				"Content-Type": "application/json",
+				},
+			})
+			const result = await response.json()
+			console.log(result)
+			start = true
+			if (result.object == "list") {
+				//notification("Session started")
+				start = true
+				let modelList = []
+				result.data.forEach((e) => {
+					if (e.id.includes("gpt")) {
+						modelList.push(e.id)
+					}
+				})
+		
+				let index = modelList.findIndex((e) => e == "gpt-3.5-turbo")
+				if (index) modelList.unshift(modelList.splice(index, 1)[0])
+				index = modelList.findIndex((e) => e == "gpt-4")
+				if (index) modelList.unshift(modelList.splice(index, 1)[0])
+
+				setModels(modelList)
+				localStorage.setItem('modelList', JSON.stringify(modelList));
+				localStorage.setItem('API_KEY', API_KEY);
+				localStorage.setItem('BASE_URL', BASE_URL);
 			}
 		}
 		
@@ -979,10 +1003,11 @@
 		  controller = new AbortController();
           const API_KEY = document.getElementById("api-key").value
           const url = baseUrl+"/v1/chat/completions"
-          const response = await service.fetch(url, {
+          const response = await networkService.fetch(url, {
 			signal: controller.signal,
             method: "POST",
             headers: {
+			  "ngrok-skip-browser-warning": "true",
               Authorization: `Bearer ${API_KEY}`,
               "Content-Type": "application/json",
             },
@@ -1006,39 +1031,45 @@
               if (data.length === 0) return // ignore empty message
               if (data.startsWith(":")) return // ignore sse comment message
               if (data == "data: [DONE]") {
-                dataDone = true
-                return
-              }
-			  console.log(data)
-              const json = JSON.parse(data.substring(6))
-              if (json.choices[0].delta.finish_reason == "stop") {
-                done = true
-                dataDone = true
-                return
-              }
-              const content = json.choices[0].delta.content
-              if (content == "" || firstRes == true) {
-				firstRes = false
-                addNewChatBox("assistant")
-                document.getElementById("add-message").classList.add("display-none")
-                const chatScrollContainer =
-                  document.getElementById("chat-container")
-                chatScrollContainer.scrollTop = chatScrollContainer.scrollHeight
-              }
-              if (done != true && content != null) {
-                message += content
-                const currentChat = document.querySelector("#chat .chat-item:last-child textarea",)
-                const chatScrollContainer = document.getElementById("chat-container")
-                const bottom = chatScrollContainer.scrollHeight - chatScrollContainer.scrollTop - chatScrollContainer.clientHeight
-                currentChat.value += content
-                const oldHeight = currentChat.style.height
-                currentChat.style.height = `${currentChat.scrollHeight}px`
-                const changed = oldHeight != currentChat.style.height
-                if (changed && bottom < 1) {
-                  chatScrollContainer.scrollTop =
-                    chatScrollContainer.scrollHeight
-                }
-              }
+				dataDone = true
+				return
+				}
+				try{
+					const json = JSON.parse(data.substring(6))
+					if (json.choices[0].delta.finish_reason == "stop") {
+					done = true
+					dataDone = true
+					return
+				  }
+				  const content = json.choices[0].delta.content
+				  if (content == "" || firstRes == true) {
+					firstRes = false
+					addNewChatBox("assistant")
+					document.getElementById("add-message").classList.add("display-none")
+					const chatScrollContainer =
+					  document.getElementById("chat-container")
+					chatScrollContainer.scrollTop = chatScrollContainer.scrollHeight
+				  }
+				  if (done != true && content != null) {
+					message += content
+					const currentChat = document.querySelector("#chat .chat-item:last-child textarea",)
+					const chatScrollContainer = document.getElementById("chat-container")
+					const bottom = chatScrollContainer.scrollHeight - chatScrollContainer.scrollTop - chatScrollContainer.clientHeight
+					currentChat.value += content
+					const oldHeight = currentChat.style.height
+					currentChat.style.height = `${currentChat.scrollHeight}px`
+					const changed = oldHeight != currentChat.style.height
+					if (changed && bottom < 1) {
+					  chatScrollContainer.scrollTop =
+						chatScrollContainer.scrollHeight
+					}
+				  }
+					
+				}catch(e){
+					console.log(data)
+				   console.log(e)
+				}
+              
             })
             if (dataDone) break
           }
