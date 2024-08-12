@@ -1,3 +1,19 @@
+// node_modules/@sinclair/smoke/agent/agent.mjs
+function browserType() {
+  const userAgent = navigator.userAgent.toLowerCase();
+  if (userAgent.includes("firefox")) {
+    return "Firefox";
+  } else if (userAgent.includes("edg/") || userAgent.includes("chrome") && !userAgent.includes("chromium")) {
+    return "Chromium";
+  } else if (userAgent.includes("safari") && !userAgent.includes("chrome") && !userAgent.includes("chromium")) {
+    return "Safari";
+  } else if (userAgent.includes("msie") || userAgent.includes("trident/")) {
+    return "Internet Explorer";
+  } else {
+    return "Unknown";
+  }
+}
+
 // node_modules/@sinclair/smoke/async/barrier.mjs
 var Barrier = class {
   #resolvers = [];
@@ -88,6 +104,14 @@ var Mutex = class {
     next.resolve(lock);
   }
 };
+
+// node_modules/@sinclair/smoke/async/timeout.mjs
+async function timeout(promise, options) {
+  const error = options.error ?? new Error(`Promise did not resolve after ${options.timeout} milliseconds`);
+  const timeout2 = new Promise((_, reject) => setTimeout(() => reject(error), options.timeout));
+  const result = await Promise.race([promise, timeout2]);
+  return result;
+}
 
 // node_modules/@sinclair/smoke/buffer/buffer.mjs
 var encoder = new TextEncoder();
@@ -1930,7 +1954,7 @@ var HttpListener = class {
     }
     await stream.close();
   }
-  #createReadableFromRequestInit(listenerRequestInit, stream) {
+  #createReadableStreamFromRequestInit(listenerRequestInit, stream) {
     if (["HEAD", "GET"].includes(listenerRequestInit.method))
       return null;
     return new ReadableStream({
@@ -1944,6 +1968,21 @@ var HttpListener = class {
       }
     });
   }
+  async #createBlobFromRequestInit(listenerRequestInit, stream) {
+    if (["HEAD", "GET"].includes(listenerRequestInit.method))
+      return null;
+    const buffers = [];
+    while (true) {
+      const next = await stream.read();
+      if (next === null || equals(next, REQUEST_END))
+        break;
+      buffers.push(next);
+    }
+    return new Blob(buffers);
+  }
+  async #createBodyFromRequestInit(listenerRequestInit, stream) {
+    return browserType() === "Firefox" ? this.#createBlobFromRequestInit(listenerRequestInit, stream) : this.#createReadableStreamFromRequestInit(listenerRequestInit, stream);
+  }
   async #onRequest(socket) {
     const stream = new FrameDuplex(socket);
     const listenerRequestInit = await this.#readListenerRequestInit(stream);
@@ -1951,7 +1990,7 @@ var HttpListener = class {
       return await stream.close();
     const url = new URL(`http://${socket.local.hostname}:${socket.local.port}${listenerRequestInit.url}`);
     const headers = new Headers(listenerRequestInit.headers);
-    const body = this.#createReadableFromRequestInit(listenerRequestInit, stream);
+    const body = await this.#createBodyFromRequestInit(listenerRequestInit, stream);
     const request = new Request(url, {
       method: listenerRequestInit.method,
       headers,
@@ -2040,7 +2079,7 @@ async function fetch2(net, endpoint, requestInit = {}) {
   const duplex = new FrameDuplex(socket);
   await sendListenerRequestInit(duplex, url, requestInit);
   sendRequestBody(duplex, requestInit).catch((error) => console.error(error));
-  const signal = await readResponseSignal(duplex);
+  const signal = await timeout(readResponseSignal(duplex), { timeout: 4e3, error: new Error("A timeout occured reading the http response signal") });
   if (signal === null) {
     await duplex.close();
     throw Error(`Connection to ${endpoint} terminated unexpectedly`);
@@ -2049,7 +2088,7 @@ async function fetch2(net, endpoint, requestInit = {}) {
     await duplex.close();
     throw Error("Server is using alternate protocol");
   }
-  const responseInit = await readListenerResponseInit(duplex);
+  const responseInit = await timeout(readListenerResponseInit(duplex), { timeout: 4e3, error: new Error("A timeout occured reading http response init") });
   if (responseInit === null) {
     await duplex.close();
     throw Error("Unable to parse server response headers");
@@ -2652,6 +2691,7 @@ var NetSocket = class {
     this.#mutex = new Mutex();
     this.#readchannel = new Channel();
     this.#datachannel = datachannel;
+    this.#datachannel.binaryType = "arraybuffer";
     this.#datachannel.addEventListener("message", (event) => this.#onMessage(event));
     this.#datachannel.addEventListener("close", (event) => this.#onClose(event));
     this.#datachannel.addEventListener("error", (event) => this.#onError(event));
@@ -2789,7 +2829,7 @@ var NetModule = class {
   }
   async connect(options) {
     const [hostname, port] = [options.hostname ?? "localhost", options.port];
-    const [peer, datachannel] = await this.#webrtc.connect(hostname, port);
+    const [peer, datachannel] = await this.#webrtc.connect(hostname, port, { ordered: true, maxRetransmits: 16 });
     return new NetSocket(peer, datachannel);
   }
 };
@@ -2854,21 +2894,18 @@ var WebRtcModule = class {
     this.#channelListeners.set(options.port.toString(), listener);
     return listener;
   }
-  async connect(remoteAddress, port) {
-    const open = new Deferred();
+  async connect(remoteAddress, port, options) {
     const peer = await this.#resolvePeer(await this.#resolveAddress(remoteAddress));
-    const datachannel = peer.connection.createDataChannel(port.toString(), { ordered: true, maxRetransmits: 16 });
-    datachannel.addEventListener("open", () => {
-      peer.datachannels.add(datachannel);
-      open.resolve([peer, datachannel]);
-    });
-    datachannel.addEventListener("close", () => {
-      peer.datachannels.delete(datachannel);
-    });
-    setTimeout(() => {
-      open.reject(new Error(`Connection to '${remoteAddress}:${port}' timed out`));
-    }, 10e3);
-    return await open.promise();
+    const datachannel = peer.connection.createDataChannel(port.toString(), options);
+    const awaiter = new Deferred();
+    datachannel.addEventListener("close", () => peer.datachannels.delete(datachannel));
+    datachannel.addEventListener("open", () => peer.datachannels.add(datachannel));
+    datachannel.addEventListener("open", () => awaiter.resolve([peer, datachannel]));
+    return timeout(awaiter.promise(), { timeout: 10e3, error: new Error(`Connection to '${remoteAddress}:${port}' timed out`) });
+  }
+  async terminate(remoteAddress) {
+    this.#hub.send({ to: remoteAddress, data: { type: "terminate" } });
+    await this.#terminateConnection(remoteAddress);
   }
   async addTrack(remoteAddress, track, ...streams) {
     const peer = await this.#resolvePeer(await this.#resolveAddress(remoteAddress));
@@ -2919,7 +2956,7 @@ var WebRtcModule = class {
       lock.dispose();
     }
   }
-  async onHubCandidate(message) {
+  async #onHubCandidate(message) {
     if (message.data.candidate === null)
       return;
     const peer = await this.#resolvePeer(message.from);
@@ -2937,7 +2974,9 @@ var WebRtcModule = class {
       case "description":
         return this.#onHubDescription(message);
       case "candidate":
-        return this.onHubCandidate(message);
+        return this.#onHubCandidate(message);
+      case "terminate":
+        return this.#terminateConnection(message.from);
     }
   }
   async #onPeerNegotiationNeeded(peer, event) {
@@ -3180,15 +3219,27 @@ var networkService_default = {
   address: "",
   ICEParams: { params: [] } = { params: [] },
   useSmoke: false,
+  ws: WebSocket,
+  queue: [],
   smokeClient: null,
   setNetwork(ws, infoHash, peerId, remoteAddr) {
+    console.log("setting network");
     this.address = peerId;
     const client = new Network({ hub: new WebtorrentHub(ws, infoHash, peerId, remoteAddr) });
     this.smokeClient = client;
+    this.remoteAddr = remoteAddr;
+    this.ws = ws;
+    console.log("done setting network");
   },
   async fetch(url, options) {
     if (this.useSmoke && this.smokeClient) {
-      return await this.smokeClient.Http.fetch(url, options);
+      console.log("using smoke");
+      console.log({ ws: this.ws.readyState });
+      if (this.ws.readyState === 1) {
+        return await this.smokeClient.Http.fetch(url, options);
+      } else {
+        throw new Error('socket not open. Mkae sure to use ws.addEventListener("open", ()=>{...})');
+      }
     } else {
       return await fetch(url, options);
     }
