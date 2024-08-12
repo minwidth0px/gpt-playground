@@ -2895,6 +2895,7 @@ var WebRtcModule = class {
     return listener;
   }
   async connect(remoteAddress, port, options) {
+    console.log("Connecting to", remoteAddress, port);
     const peer = await this.#resolvePeer(await this.#resolveAddress(remoteAddress));
     const datachannel = peer.connection.createDataChannel(port.toString(), options);
     const awaiter = new Deferred();
