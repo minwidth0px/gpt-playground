@@ -2902,7 +2902,7 @@ var WebRtcModule = class {
     datachannel.addEventListener("close", () => peer.datachannels.delete(datachannel));
     datachannel.addEventListener("open", () => peer.datachannels.add(datachannel));
     datachannel.addEventListener("open", () => awaiter.resolve([peer, datachannel]));
-    return timeout(awaiter.promise(), { timeout: 10e3, error: new Error(`Connection to '${remoteAddress}:${port}' timed out`) });
+    return timeout(awaiter.promise(), { timeout: 30e3, error: new Error(`Connection to '${remoteAddress}:${port}' timed out`) });
   }
   async terminate(remoteAddress) {
     this.#hub.send({ to: remoteAddress, data: { type: "terminate" } });
