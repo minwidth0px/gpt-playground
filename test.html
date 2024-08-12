@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+
+<head>
+<title>test</title>
+</head>
+<body>
+    <div>
+        <div> <input placeholder="URL" id="base-url"/> </div>
+        <button id="start" class="button-4">Start</button>
+    </div>
+    <script type="module">
+
+		import networkService from './networkService.js'
+		
+        document.getElementById("start").addEventListener("click", () => {
+            connect()
+        })
+		async function connect(){
+			const urlObj = new URL(document.getElementById("base-url").value)
+			const searchParams = urlObj.searchParams
+			const useSmoke = true
+			let ws = null
+			const infoHash = searchParams.has("infoHash")? searchParams.get("infoHash") : ""
+            const wsUrl = 'wss://tracker.files.fm:7073'  
+            ws = new WebSocket(wsUrl)
+            const peerId = window.crypto.randomUUID().replaceAll('-', '').slice(0, 20)
+            networkService.setNetwork(ws, infoHash, peerId, urlObj.origin)
+			ws.addEventListener('open', async () => {
+                console.log("ws open")
+                const text = await networkService.smokeClient.Http.fetch([networkService.remoteAddr, "v1/models"].join("/")).then(r => r.text());
+                console.log(text);
+            })
+		}
+   </script>
+</body>
+
+</html>
