@@ -273,9 +273,12 @@
 	and add padding to the top of the textarea
 	*/
 	@media (max-width: 850px) {
-		.chat-item{
+		.chat-item-role-and-text-container{
 			flex-direction: column;
 			gap: 0.5em;
+		}
+		.chat-item-role-container{
+			padding-top: 0px !important;
 		}
 	}
 	.chat-item-textarea{
@@ -1155,6 +1158,10 @@
           newChatItem.classList.add("chat-item")
           const newChatItemRole = document.createElement("div")
           const newChatItemRoleContainer = document.createElement("span")
+		  const chatItemRoleAndTextContainer = document.createElement("span")
+		  chatItemRoleAndTextContainer.classList.add("display-flex")
+		  chatItemRoleAndTextContainer.classList.add("chat-item-role-and-text-container")
+
           newChatItemRoleContainer.classList.add("chat-item-role-container")
           newChatItemRoleContainer.appendChild(newChatItemRole)
           newChatItemRole.classList.add("chat-item-role")
@@ -1177,8 +1184,9 @@
           const newRemove = document.createElement("span")
           newRemove.innerText = "⊖"
           newRemove.classList.add("chat-item-remove")
-          newChatItem.appendChild(newChatItemRoleContainer)
-          newChatItem.appendChild(newChatItemTextArea)
+		  chatItemRoleAndTextContainer.appendChild(newChatItemRoleContainer)
+		  chatItemRoleAndTextContainer.appendChild(newChatItemTextArea)
+		  newChatItem.appendChild(chatItemRoleAndTextContainer)
           newChatItem.appendChild(newRemove)
           chat.appendChild(newChatItem)
           newRemove.addEventListener("click", (e) => {
