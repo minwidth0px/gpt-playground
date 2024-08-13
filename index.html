@@ -269,6 +269,15 @@
 		padding: 8px;
 		border-bottom: solid #cfcfcf 1px;
 	}
+	/*make chat item flex direction column when on small screen 
+	and add padding to the top of the textarea
+	*/
+	@media (max-width: 850px) {
+		.chat-item{
+			flex-direction: column;
+			gap: 0.5em;
+		}
+	}
 	.chat-item-textarea{
 		border-radius: 8px;
 		padding-top: 6px;
@@ -724,8 +733,8 @@
 			const page_url = String(window.location)
 			if (page_url.includes("#")) {
 				const params = new URLSearchParams(page_url.split("#")[1])
-				const api_key = params.has("key")? params.get("key") : ""
-				const url = params.has("url")? params.get("url").replace(/\/$/, '') : ""
+				const api_key = params.get("key")
+				const url = params.get("url").replace(/\/$/, '');
 				if (url != null) baseUrl = url
 				if (document.getElementById("api-key").value == api_key) {
 					document.getElementById("api-key").value = localStorage.getItem("API_KEY")
@@ -740,9 +749,6 @@
 						console.log("we are here")
 						connect()
 					}
-				}
-				if(params.has("rmls")){
-					localStorage.clear()
 				}
 			}else{
 				if (localStorage.getItem("modelList") !== null) {
